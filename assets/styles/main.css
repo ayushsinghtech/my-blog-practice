@@ -14,3 +14,7 @@ body {
 .subscribe-button:hover {
     background-color: darkred;
 }
+
+header {
+  margin-bottom: 20px;
+}
