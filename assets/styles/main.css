@@ -2,3 +2,15 @@ body {
   background-color: #121212;
   color: #e0e0e0;
 }
+
+.subscribe-button {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.subscribe-button:hover {
+    background-color: darkred;
+}
