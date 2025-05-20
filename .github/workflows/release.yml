@@ -33,5 +33,5 @@ jobs:
           git tag $VERSION || echo "Tag $VERSION already exists"
           
           # IMPORTANT: Set correct remote using PAT
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/ayushsinghtech/my-blog-practice.git
           git push origin $VERSION
