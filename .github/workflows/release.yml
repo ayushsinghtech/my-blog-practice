@@ -1,33 +1,33 @@
-name: Release - Auto Tag
+name: Auto Release
 
 on:
   push:
     branches:
-      - main
+      - main  # or 'master' if your branch is named that
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Read version from package.json and create tag
-        id: tag
+      - name: Get package version
+        id: version
         run: |
           version=$(node -p "require('./package.json').version")
-          echo "version=v$version" >> $GITHUB_OUTPUT
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
 
-      - name: Push tag using PAT
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+      - name: Commit & Push tag
         run: |
-          git tag ${{ steps.tag.outputs.version }}
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
-          git push origin ${{ steps.tag.outputs.version }}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag "v${{ steps.version.outputs.VERSION }}"
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} --tags
