@@ -1,7 +1,7 @@
-- name: Push tag to repository
-  env:
+name: Push tag to repository
+env:
     GH_PAT: ${{ secrets.GH_PAT }}
-  run: |
+run: |
     git config user.name "github-actions[bot]"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     git tag $VERSION
