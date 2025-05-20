@@ -24,9 +24,10 @@ jobs:
           version=$(node -p "require('./package.json').version")
           echo "version=v$version" >> $GITHUB_OUTPUT
 
-      - name: Push tag
+      - name: Push tag using PAT
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git tag ${{ steps.tag.outputs.version }}
-          git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} ${{ steps.tag.outputs.version }}
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git push origin ${{ steps.tag.outputs.version }}
