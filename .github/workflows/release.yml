@@ -13,11 +13,11 @@ jobs:
       - name: Debug GH_PAT
         run: echo "${{ secrets.GH_PAT }}" # **Remove this after debugging**
 
-      - name: Check remote URL
-        run: git remote -v
-
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Check remote URL
+        run: git remote -v
 
       - name: Setup Node
         uses: actions/setup-node@v4
