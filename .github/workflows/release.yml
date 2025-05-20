@@ -1,54 +1,43 @@
-# name: Release Version
+name: Release Version
 
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   tag:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v3
-
-#       - name: Setup Node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: '20'
-
-#       - name: Get version from package.json
-#         id: get_version
-#         run: |
-#           echo "VERSION=v$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-
-#       - name: Set up Git and push tag
-#         env:
-#           GH_PAT: ${{ secrets.GH_PAT }}
-#         run: |
-#           git config user.name "github-actions[bot]"
-#           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-#           git tag $VERSION || echo "Tag $VERSION already exists"
-          
-#           # IMPORTANT: Set correct remote using PAT
-#           git remote set-url origin https://x-access-token:${GH_PAT}@github.com/ayushsinghtech/my-blog-practice.git
-#           git push origin $VERSION
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  release:
+  tag:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Setup Git for push
+    steps:
+      - name: Debug GH_PAT
+        run: echo "${{ secrets.GH_PAT }}" # **Remove this after debugging**
+
+      - name: Check remote URL
+        run: git remote -v
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          echo "VERSION=v$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: Set up Git and push tag
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/ayushsinghtech/my-blog-practice.git
-
-      - name: Create and push tag
-        run: |
-          git tag "v1.0.3"
-          git push origin "v1.0.3"
+          
+          git tag $VERSION || echo "Tag $VERSION already exists"
+          
+          # IMPORTANT: Set correct remote using PAT
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/ayushsinghtech/my-blog-practice.git
+          git push origin $VERSION
